@@ -12,51 +12,27 @@ node {
 
   checkout scm
 
-  stage("Static analysis") {
-    sh "docker build -t ${imageTag} ."
-
-    // Check style    
-    sh "docker run --rm ${imageTag} npm run lint"
-    // step([
-    //   $class: "hudson.plugins.checkstyle.CheckStylePublisher",
-    //   checkstyle: "reports/checkstyle.xml",
-    //   unstableTotalAll: "10",
-    //   failedTotalAll: "5",
-    //   usePreviousBuildAsReference: true
-    // ])
-
-    // Unit test
-    // sh "docker run --rm ${imageTag} npm test"
-
-
-    // step([
-    //   $class: "XUnitBuilder",
-    //   thresholds: [
-    //     [$class: "FailedThreshold", failureThreshold: "1"]
-    //   ],
-    //   tools: [
-    //     [$class: "JUnitType", pattern: "reports/clover.xml"]
-    //   ]
-    // ])
-  }
-
-  // if (currentBuild.result == null || currentBuild.result == "SUCCESS") {
-    // stage("Build image") {
-    //   sh "docker build -t ${imageTag} ."
-    // }
-
-    // stage("Push image to registry") {
-    //   sh "docker -- push ${imageTag}"
-    // }
-
     stage('Deploy application') {
-      // Replace variables within deployment files into values provided above
       sh "echo ${env.BRANCH_NAME}"
 
-
       switch (env.BRANCH_NAME) {
-        case "master":
-          sh "echo http://`kubectl --namespace=production get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}"
+        case "DEV":
+          sh "echo 'ENVIROMENT=development' >> .env"
+          sh "echo 'PORT=3000' >> .env"
+          sh "docker build -t ${imageTag} ."
+          break
+        case "QA":
+          sh "echo 'ENVIROMENT=development' >> .env"
+          sh "echo 'PORT=3000' >> .env"
+          // Lint  
+          sh "docker run --rm ${imageTag} npm run lint"
+          // Test unitarios
+          sh "docker run --rm ${imageTag} npm test"
+
+          break
+        case "PROD":
+          sh "echo 'ENVIROMENT=production' >> .env"
+          sh "echo 'PORT=3000' >> .env"
           break
 
         default:
@@ -64,5 +40,5 @@ node {
           echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
       }
     }
-  // }
+  
 }
