@@ -1,14 +1,7 @@
 
 node {
-  // Change values here
-  def project = "nestjs"
-  def appName = "nestjs-starter"
-  def port = "3000"
-  def staticIp = ""
-
-  // Other variables
-  def feSvcName = "${appName}"
-  def imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+  // variables
+  def imageTag = "food-project-backend:latest"
 
   checkout scm
 
@@ -18,26 +11,28 @@ node {
       switch (env.BRANCH_NAME) {
         case "DEV":
           sh "echo 'ENVIROMENT=development' >> .env"
-          sh "echo 'PORT=3000' >> .env"
+          sh "echo 'PORT=3001' >> .env"
           sh "docker build -t ${imageTag} ."
+          stage (‘Deploy’) {
+
+          sh ‘ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/”’
+
           break
         case "QA":
           sh "echo 'ENVIROMENT=development' >> .env"
-          sh "echo 'PORT=3000' >> .env"
+          sh "echo 'PORT=3001' >> .env"
           // Lint  
           sh "docker run --rm ${imageTag} npm run lint"
           // Test unitarios
           sh "docker run --rm ${imageTag} npm test"
-
           break
         case "PROD":
           sh "echo 'ENVIROMENT=production' >> .env"
-          sh "echo 'PORT=3000' >> .env"
+          sh "echo 'PORT=3001' >> .env"
           break
 
         default:
-          echo "To access your environment run `kubectl proxy`"
-          echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
+          echo "Mensaje para todas las ramas"
       }
     }
   
