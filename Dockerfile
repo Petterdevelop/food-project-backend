@@ -9,8 +9,8 @@ RUN npm run build
 RUN mkdir -p /app/node_modules && mkdir -p /app/dist  && chown -R node:node /app
 WORKDIR /app
 
-COPY  --from=build-step --chown=node:node /app/node_modules ./node_modules
-COPY  --from=build-step --chown=node:node /app/dist ./dist
+COPY  --chown=node:node /app/node_modules ./node_modules
+COPY  --chown=node:node /app/dist ./dist
 
 USER node
 
