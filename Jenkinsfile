@@ -38,14 +38,14 @@ node {
     // ])
   }
 
-  if (currentBuild.result == null || currentBuild.result == "SUCCESS") {
+  // if (currentBuild.result == null || currentBuild.result == "SUCCESS") {
     stage("Build image") {
       sh "docker build -t ${imageTag} ."
     }
 
-    stage("Push image to registry") {
-      sh "gcloud docker -- push ${imageTag}"
-    }
+    // stage("Push image to registry") {
+    //   sh "docker -- push ${imageTag}"
+    // }
 
     stage('Deploy application') {
       // Replace variables within deployment files into values provided above
@@ -62,5 +62,5 @@ node {
           echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
       }
     }
-  }
+  // }
 }
