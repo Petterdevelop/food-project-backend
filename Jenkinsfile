@@ -13,8 +13,8 @@ node {
           sh "echo 'ENVIROMENT=development' >> .env"
           sh "echo 'PORT=3001' >> .env"
           sh "docker build -t ${imageTag} ."
-          sh "scp ./docker-compose.yml test@127.0.0.1:~/backend/docker-compose.yaml "
-          sh 'ssh test@127.0.0.1 "cd backend && docker-compose down && docker-compose up -d"'
+          sh "scp ./docker-compose.yml test@192.168.21.153:~/backend/docker-compose.yaml "
+          sh 'ssh test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
           break
 
         case "QA":
@@ -24,15 +24,15 @@ node {
           sh "docker run --rm ${imageTag} npm run lint"
           // Test unitarios
           sh "docker run --rm ${imageTag} npm test"
-          sh "scp ./docker-compose.yml test@127.0.0.1:~/backend/docker-compose.yaml "
-          sh 'ssh test@127.0.0.1 "cd backend && docker-compose down && docker-compose up -d"'
+          sh "scp ./docker-compose.yml test@192.168.21.153:~/backend/docker-compose.yaml "
+          sh 'ssh test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
           break
 
         case "PROD":
           sh "echo 'ENVIROMENT=production' >> .env"
           sh "echo 'PORT=3001' >> .env"
-          sh "scp ./docker-compose.yml test@127.0.0.1:~/backend/docker-compose.yaml "
-          sh 'ssh test@127.0.0.1 "cd backend && docker-compose down && docker-compose up -d"'
+          sh "scp ./docker-compose.yml test@192.168.21.153:~/backend/docker-compose.yaml "
+          sh 'ssh test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
           break
 
         default:
