@@ -13,9 +13,7 @@ node {
           sh "echo 'ENVIROMENT=development' >> .env"
           sh "echo 'PORT=3001' >> .env"
           sh "docker build -t ${imageTag} ."
-          stage (‘Deploy’) {
-
-          sh ‘ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/”’
+          // sh ‘ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/”’
 
           break
         case "QA":
