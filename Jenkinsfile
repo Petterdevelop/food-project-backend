@@ -15,7 +15,7 @@ node {
           sh "docker build -t ${imageTag} ."
           sh "ls /var/jenkins_home/.ssh/"
           // sh "scp -i /var/jenkins_home/.ssh/id_rsa ./docker-compose.yml test@192.168.21.153:~/backend/docker-compose.yaml "
-          sh 'ssh -i /var/jenkins_home/.ssh/id_rsa test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
+          sh 'ssh -oStrictHostKeyChecking=no -i /var/jenkins_home/.ssh/id_rsa test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
           break
 
         case "QA":
@@ -26,14 +26,14 @@ node {
           // Test unitarios
           sh "docker run --rm ${imageTag} npm test"
           // sh "scp -i /var/jenkins_home/.ssh/id_rsa ./docker-compose.yml test@192.168.21.153:~/backend/docker-compose.yaml "
-          sh 'ssh -i /var/jenkins_home/.ssh/id_rsa test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
+          sh 'ssh -oStrictHostKeyChecking=no -i /var/jenkins_home/.ssh/id_rsa test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
           break
 
         case "PROD":
           sh "echo 'ENVIROMENT=production' >> .env"
           sh "echo 'PORT=3001' >> .env"
           // sh "scp -i /var/jenkins_home/.ssh/id_rsa ./docker-compose.yml test@192.168.21.153:~/backend/docker-compose.yaml "
-          sh 'ssh -i /var/jenkins_home/.ssh/id_rsa test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
+          sh 'ssh -oStrictHostKeyChecking=no -i /var/jenkins_home/.ssh/id_rsa test@192.168.21.153 "cd backend && docker-compose down && docker-compose up -d"'
           break
 
         default:
