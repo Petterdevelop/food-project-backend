@@ -17,13 +17,13 @@ node {
 
     // Check style    
     sh "docker run --rm ${imageTag} npm run lint"
-    step([
-      $class: "hudson.plugins.checkstyle.CheckStylePublisher",
-      checkstyle: "reports/checkstyle.xml",
-      unstableTotalAll: "10",
-      failedTotalAll: "5",
-      usePreviousBuildAsReference: true
-    ])
+    // step([
+    //   $class: "hudson.plugins.checkstyle.CheckStylePublisher",
+    //   checkstyle: "reports/checkstyle.xml",
+    //   unstableTotalAll: "10",
+    //   failedTotalAll: "5",
+    //   usePreviousBuildAsReference: true
+    // ])
 
     // Unit test
     sh "docker run --rm ${imageTag} npm test"
