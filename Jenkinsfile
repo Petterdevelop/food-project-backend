@@ -27,15 +27,15 @@ node {
 
     // Unit test
     sh "docker run --rm ${imageTag} npm test"
-    step([
-      $class: "XUnitBuilder",
-      thresholds: [
-        [$class: "FailedThreshold", failureThreshold: "1"]
-      ],
-      tools: [
-        [$class: "JUnitType", pattern: "reports/clover.xml"]
-      ]
-    ])
+    // step([
+    //   $class: "XUnitBuilder",
+    //   thresholds: [
+    //     [$class: "FailedThreshold", failureThreshold: "1"]
+    //   ],
+    //   tools: [
+    //     [$class: "JUnitType", pattern: "reports/clover.xml"]
+    //   ]
+    // ])
   }
 
   if (currentBuild.result == null || currentBuild.result == "SUCCESS") {
