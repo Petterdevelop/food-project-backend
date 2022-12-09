@@ -4,5 +4,5 @@ WORKDIR /app
 COPY . .
 RUN npm install
 RUN npm run build
-CMD  ["sh", "-c",  "node /app/dist/src/main"]
+CMD  ["sh", "-c",  "node /app/dist/main"]
 EXPOSE 3000
