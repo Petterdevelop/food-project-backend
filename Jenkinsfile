@@ -26,7 +26,9 @@ node {
     // ])
 
     // Unit test
-    sh "docker run --rm ${imageTag} npm test"
+    // sh "docker run --rm ${imageTag} npm test"
+
+
     // step([
     //   $class: "XUnitBuilder",
     //   thresholds: [
@@ -39,9 +41,9 @@ node {
   }
 
   // if (currentBuild.result == null || currentBuild.result == "SUCCESS") {
-    stage("Build image") {
-      sh "docker build -t ${imageTag} ."
-    }
+    // stage("Build image") {
+    //   sh "docker build -t ${imageTag} ."
+    // }
 
     // stage("Push image to registry") {
     //   sh "docker -- push ${imageTag}"
